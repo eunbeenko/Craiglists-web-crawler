@@ -2,20 +2,42 @@ from django.shortcuts import render
 from .models import Book
 from bs4 import BeautifulSoup
 from requests import get
+import math
 
 
 def index(request):
-    latest_book_list = Book.objects.order_by('id')[0:1000]
+    if request.method == 'GET' and 'page' in request.GET:
+        page = int(request.GET['page'])
+        start = (page-1)*100
+        end = page*100
+    else:
+        start = 0
+        end = 100
+    latest_book_list = Book.objects.order_by('id')[start:end]
     context = {
         'latest_book_list': latest_book_list,
+        'pages': range(1, 11)
     }
     return render(request, 'craglists/index.html', context)
 
 
 def search(request):
-    latest_book_list = Book.objects.order_by('id')[0:1000]
+    search_text = request.GET['title']
+    if request.method == 'GET' and 'page' in request.GET:
+        page = int(request.GET['page'])
+        start = (page-1)*100
+        end = page*100
+    else:
+        start = 0
+        end = 100
+    list = Book.objects.filter(title__icontains=search_text)
+    count = list.count()
+    result = list[start:end]
+
     context = {
-        'latest_book_list': latest_book_list,
+        'latest_book_list': result,
+        'pages': range(1, math.ceil(count/100)),
+        'search_text': search_text,
     }
     return render(request, 'craglists/search.html', context)
 

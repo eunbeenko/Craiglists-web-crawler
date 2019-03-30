@@ -3,11 +3,18 @@
 <a href="/craglists/drop">link to drop</a>
 <form action="/craglists/search">
   <div class="form-group">
-    <label for="title">Title</label>
+    <label for="title">Search Title</label>
     <input type="text" class="form-control" id="title" name="title" placeholder="Search title">
     </div>
   <button type="submit" class="btn btn-primary">Search</button>
 </form>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+  {% for x in pages %}
+    <li class="page-item"><a class="page-link" href="/craglists?page={{ x }}">{{ x }}</a></li>
+  {% endfor %}
+  </ul>
+</nav>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -28,9 +35,9 @@
 </table>
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="/craglists?page=1">1</a></li>
-    <li class="page-item"><a class="page-link" href="/craglists?page=2">2</a></li>
-    <li class="page-item"><a class="page-link" href="/craglists?page=3">3</a></li>
+    {% for x in pages %}
+    <li class="page-item"><a class="page-link" href="/craglists?page={{ x }}">{{ x }}</a></li>
+  {% endfor %}
   </ul>
 </nav>
 {% else %}
