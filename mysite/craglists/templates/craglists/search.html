@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 {% if latest_book_list %}
-<a href="/craglists/">link to book lists</a>{{ a }}
+<a href="/craglists/">link to book lists</a>
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     {% for x in pages %}
@@ -27,6 +27,6 @@
   </tbody>
 </table>
 {% else %}
-    <a href="/craglists/fetch">link to fetch</a>
+    <a href="/craglists/">link to book lists</a>
     <p>No books are available.</p>
 {% endif %}
