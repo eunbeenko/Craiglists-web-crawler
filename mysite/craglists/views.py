@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import Book
-from bs4 import BeautifulSoup
 from requests import get
 import math
+import re
 
 
 def index(request):
@@ -48,15 +48,26 @@ def fetch(request):
     for x in pages:
         url = 'https://newyork.craigslist.org/search/bka' + x
         response = get(url)
-        html_soup = BeautifulSoup(response.text, 'html.parser')
-        type(html_soup)
-        books = html_soup.find_all('li', class_='result-row')
+        response_line = re.split('\n', response.text)
+        stripped_line = ''
 
-        for every_book in books:
-            name = every_book.p.a.text
-            price = every_book.p.find('span', class_='result-price').text
-            b = Book(title=name, price=price)
-            b.save()
+        for line in response_line:
+            stripped_line += line.lstrip()
+
+        relevant = re.findall('<ul class="rows">(.*?)</ul>', stripped_line)
+        books = str(relevant).split('</p></li>') # All books end with this tag
+
+        for line in books:
+            title = re.findall('class="result-title hdrlnk">(.*?)</a>', line)
+            price = re.findall('class="result-price">\$(.*?)</span>', line)
+            try:
+                instance, created = Book.objects.update_or_create(title=title[0], price=price[0])
+                if created: # Checks for duplicates
+                    instance.save()
+                else:
+                    pass
+            except:
+                pass
 
     return render(request, 'craglists/fetch.html')
 
