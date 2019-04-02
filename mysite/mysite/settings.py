@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 CRONJOBS = [
-    ('0 0 * * *', 'cron.fetchjob')
+    ('0 0 * * *', 'craglists.cron.fetch')
 ]
 
 
