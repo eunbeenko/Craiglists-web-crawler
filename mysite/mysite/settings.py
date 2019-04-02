@@ -29,8 +29,13 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+CRONJOBS = [
+    ('0 0 * * *', 'cron.fetchjob')
+]
+
 
 INSTALLED_APPS = [
+    'django_crontab',
     'craglists.apps.CraglistsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
